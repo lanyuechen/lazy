@@ -1,0 +1,100 @@
+import React, { useEffect } from 'react';
+import { connect } from 'dva';
+import { Table, Card, Button, Icon, Modal, Spin } from 'antd';
+
+import { naturalSorter } from '@/utils/table/sorter';
+import { searchFilter } from '@/utils/table/filter';
+
+import ModalUpsert from './ModalUpsert';
+
+const {{ name[0].toUpperCase() + name.substring(1) }}: React.FC<any> = props => {
+  const { dispatch, list, modalUpsertVisible, loading, current } = props;
+
+  useEffect(() => {
+    dispatch({
+      type: '{{ name }}/list',
+    });
+  }, []);
+
+  const columns: any[] = [
+    {
+      title: 'ID',
+      dataIndex: '{{ opt.id }}',
+      render: (txt: any, record: any, i: number) => i + 1,
+    },
+    {%- for column in opt.columns %}
+    {
+      title: '{{ column.title }}',
+      dataIndex: '{{ column.dataIndex }}',
+      {%- if column.sorter %}
+      sorter: naturalSorter('{{ column.dataIndex }}'),
+      {%- endif %}
+      {%- if column.filter %}
+      ...searchFilter('{{ column.dataIndex }}'),
+      {%- endif %}
+    },
+    {%- endfor %}
+    {
+      title: 'Action',
+      render: (txt: any, record: any) => [
+        <Button onClick={() => dispatch({type: '{{ name }}/showModalUpsert', payload: record})} key="edit" type="link">Edit</Button>,
+        <Button onClick={() => handleDelete(record.id)} key="delete" type="link">Delete</Button>,
+      ],
+    },
+  ];
+
+  const handleAdd = (values: any) => {
+    if (current) {
+      dispatch({
+        type: `{{ name }}/update`,
+        payload: {
+          id: current.id,
+          values,
+        },
+      });
+    } else {
+      dispatch({
+        type: `{{ name }}/create`,
+        payload: values,
+      });
+    }
+  };
+
+  const handleDelete = (id: string) => {
+    Modal.confirm({
+      title: 'Confirm',
+      content: 'Do you confirm delete this {{ name }}?',
+      onOk: () => {
+        dispatch({
+          type: '{{ name }}/remove',
+          payload: id,
+        });
+      },
+    });
+  };
+
+  return (
+    <Spin spinning={loading}>
+      <div style={% raw %}{{ marginBottom: 15, textAlign: 'right' }}{% endraw %}>
+        <Button onClick={() => dispatch({ type: '{{ name }}/showModalUpsert' })}>
+          <Icon type="plus" /> New
+        </Button>
+        <ModalUpsert
+          visible={modalUpsertVisible}
+          onOk={handleAdd}
+          defaultValue={current}
+          onCancel={() => dispatch({ type: '{{ name }}/hideModalUpsert' })}
+        />
+      </div>
+      <Card bodyStyle={% raw %}{{ padding: 0 }}{% endraw %}>
+        <Table
+          columns={columns}
+          dataSource={list}
+          rowKey="{{ opt.id }}"
+        />
+      </Card>
+    </Spin>
+  );
+};
+
+export default connect(({ {{ name }} }: any) => {{ name }})({{ name[0].toUpperCase() + name.substring(1) }});

@@ -1,0 +1,21 @@
+{
+  "name": "lazy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "bin": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "pkg": "pkg --out-path ./bin ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^3.0.2",
+    "js-yaml": "^3.13.1",
+    "nunjucks": "^3.2.0"
+  },
+  "devDependencies": {
+    "pkg": "^4.4.0"
+  }
+}

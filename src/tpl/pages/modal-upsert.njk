@@ -1,0 +1,77 @@
+import React from 'react';
+import { Form, Modal, Input, InputNumber, DatePicker, Select } from 'antd';
+import moment from 'moment';
+
+const formItemLayout = {
+  labelCol: {
+    xs: { span: 24 },
+    sm: { span: 6 },
+  },
+  wrapperCol: {
+    xs: { span: 24 },
+    sm: { span: 18 },
+  },
+};
+
+const ModalUpsert: React.FC<any> = props => {
+  const { visible, onOk, onCancel, defaultValue = {} } = props;
+  const { getFieldDecorator, validateFields } = props.form;
+
+  const handleOk = () => {
+    validateFields((errors: any, values: any) => {
+      if (errors) {
+        return;
+      }
+      values = Object.keys(values).reduce((p: any, key: string) => {
+        p[key] = values[key] instanceof moment ? values[key].format('YYYY-MM-DD HH:mm:ss') : values[key];
+        return p;
+      }, {})
+      onOk && onOk(values);
+    });
+  };
+
+  return (
+    <Modal
+      title={props.defaultValue ? 'Update {{ name }}' : 'Add {{ name }}'}
+      visible={visible}
+      onOk={handleOk}
+      onCancel={onCancel}
+      destroyOnClose
+    >
+      <Form {...formItemLayout}>
+        {%- for column in opt.columns %}
+        <Form.Item label="{{ column.title }}">
+          {getFieldDecorator('{{ column.dataIndex }}', {
+            rules: [
+              {
+                required: true,
+              },
+            ],
+            {% if column.type === 'date' -%}
+              initialValue: moment(defaultValue.{{ column.dataIndex }}),
+            {%- else -%}
+              initialValue: defaultValue.{{ column.dataIndex }},
+            {%- endif %}
+          })(
+            {% if column.type === 'number' -%}
+              <InputNumber />
+            {%- elif column.type === 'date' -%}
+              <DatePicker showTime />
+            {%- elif column.type === 'enum' -%}
+              <Select>
+              {%- for option in column.options %}
+              <Select.Option value="{{ option.key }}">{{ option.value }}</Select.Option>
+              {%- endfor %}
+            </Select>
+            {%- else -%}
+              <Input />
+            {%- endif %}
+          )}
+        </Form.Item>
+        {%- endfor %}
+      </Form>
+    </Modal>
+  );
+};
+
+export default Form.create()(ModalUpsert);

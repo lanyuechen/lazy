@@ -1,0 +1,28 @@
+{
+  "id": "id",
+  "columns": [
+    {
+      "title": "Name",
+      "dataIndex": "name",
+      "sorter": true,
+      "filter": true
+    },
+    {
+      "dataIndex": "height",
+      "type": "number"
+    },
+    {
+      "dataIndex": "birthday",
+      "type": "date"
+    },
+    {
+      "dataIndex": "sex",
+      "type": "enum",
+      "options": [
+        {"key": "male", "value": "male"},
+        {"key": "famale", "value": "famale"}
+      ]
+    },
+    "foobar"
+  ]
+}

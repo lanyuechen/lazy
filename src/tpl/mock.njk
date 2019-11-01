@@ -1,0 +1,32 @@
+export default {
+  'GET /api/{{ name }}': {
+    success: true,
+    data: [
+      {%- for i in range(0, 15) %}
+      {
+        {{ opt.id }}: {{ i }},
+        {%- for column in opt.columns %}
+        {% if column.type === 'number' -%}
+          {{ column.dataIndex }}: {{ i }},
+        {%- elif column.type === 'date' -%}
+          {{ column.dataIndex }}: '2019-10-01 12:34:29',
+        {%- elif column.type === 'enum' -%}
+          {{ column.dataIndex }}: 'male',
+        {%- else -%}
+          {{ column.dataIndex }}: '{{ column.dataIndex }}-{{ i }}',
+        {%- endif %}
+        {%- endfor %}
+      },
+      {%- endfor %}
+    ],
+  },
+  'POST /api/test': (req: Request, res: Response) => {
+    res.send({ 
+      success: true, 
+      data: {
+        ...req.body,
+        {{ opt.id }}: Math.random(),
+      } 
+    });
+  },
+};

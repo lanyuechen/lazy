@@ -1,0 +1,45 @@
+import request from '@/utils/request';
+
+export async function query() {
+  const res = await request('/api/{{ name }}');
+
+  return {
+    success: true,
+    data: res.data,
+  };
+}
+
+export async function create(data: any) {
+  const res = await request('/api/{{ name }}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  return res;
+}
+
+export async function update(id: string, data: any) {
+  const res = await request('/api/{{ name }}', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(data),
+  });
+
+  return res;
+}
+
+export async function remove(id: string) {
+  const res = await request(`/api/{{ name }}/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  return res;
+}

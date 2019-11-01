@@ -1,0 +1,11 @@
+export function naturalSorter(name: string) {
+  return function(a: any, b: any) {
+    a = a[name];
+    b = b[name];
+    if (!isNaN(a) && !isNaN(b)) {
+      return a - b;
+    }
+    const sorted = [a, b].sort();
+    return sorted.indexOf(a) - sorted.indexOf(b);
+  } 
+}
