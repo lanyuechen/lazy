@@ -8,6 +8,11 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "pkg": "pkg --out-path ./bin ."
   },
+  "pkg": {
+    "assets": [
+      "src/tpl/**/*"
+    ]
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
