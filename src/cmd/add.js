@@ -6,7 +6,7 @@ const { tpl, writeFile, toUpperFirstCase } = require('../utils/common');
 
 program
   .command('add <name>')
-  .description('add a page, includes a model, a service, a mockup and a page entry')
+  .description('add a page')
   .option('-s, --src [path]', 'src路径', './')
   .option('-o, --option <path>', 'option路径', './option.json')
   .action(addHandler);
@@ -33,7 +33,7 @@ function addHandler (name, args) {
   };
 
   const context = { name, opt };
-  const nameCapital = name[0].toUpperCase() + name.substring(1);
+  const nameCapital = toUpperFirstCase(name);
 
   // 创建model
   writeFile(path.join(src, `models/${name}.ts`), tpl('model.njk', context));
@@ -45,9 +45,9 @@ function addHandler (name, args) {
   writeFile(path.join(src, `pages/${nameCapital}/ModalUpsert.tsx`), tpl('pages/modal-upsert.njk', context));
   // 创建mock
   writeFile(path.join(src, `../mock/${name}.ts`), tpl('mock.njk', context));
-  // 创建utils/sorter
+  // 创建utils/table/sorter
   writeFile(path.join(src, `utils/table/sorter.ts`), tpl('utils/sorter.njk', context));
-  // 创建utils/filter
+  // 创建utils/table/filter
   writeFile(path.join(src, `utils/table/filter.tsx`), tpl('utils/filter.njk', context));
   // 创键文档
   

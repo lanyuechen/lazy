@@ -15,7 +15,9 @@ module.exports = {
       return str;
     }
     return str[0].toUpperCase() + str.substring(1);
-  }
+  },
+  mkdirsSync,
+  rmDirsSync,
 };
 
 function mkdirsSync(dirname) {
@@ -25,5 +27,21 @@ function mkdirsSync(dirname) {
   if (mkdirsSync(path.dirname(dirname))) {
     fs.mkdirSync(dirname);
     return true;
+  }
+}
+
+function rmDirsSync(filePath){
+  if (!fs.existsSync(filePath)) {
+    return;
+  }
+  const info = fs.statSync(filePath);
+  if(info.isFile()){
+    fs.unlinkSync(filePath); //删除文件
+  } else {
+    const dirs = fs.readdirSync(filePath);
+    for (let dir of dirs) {
+      rmDirsSync(path.join(filePath, dir)); //递归删除
+    }
+    fs.rmdirSync(filePath); //删除目录
   }
 }
