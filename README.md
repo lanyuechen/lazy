@@ -1,6 +1,7 @@
 ### 使用方法
 ```shell
 lazy add <name> --src=./src --option=./option.json
+lazy remove <name> --src=./src
 ```
 
 ### Option (option.json)

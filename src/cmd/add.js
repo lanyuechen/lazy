@@ -7,7 +7,7 @@ const { tpl, writeFile, toUpperFirstCase } = require('../utils/common');
 program
   .command('add <name>')
   .description('add a page')
-  .option('-s, --src [path]', 'src路径', './')
+  .option('-s, --src <path>', 'src路径', './')
   .option('-o, --option <path>', 'option路径', './option.json')
   .action(addHandler);
 
