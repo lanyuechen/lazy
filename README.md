@@ -1,12 +1,52 @@
 ## Lazy Ant
 
-### 使用方法
-```shell
-lazy-ant add <name> --src=./src --option=./option.json
-lazy-ant remove <name> --src=./src
-```
+本工具基于**Ant Design Pro**，[https://umijs.org/zh/guide](https://umijs.org/zh/guide/)
 
-### Option (option.json)
+用于（业务逻辑 + Ant Design Pro的项目结构）快速生成页面代码
+
+### 使用方法
+#### 初始化Ant Design Pro项目
+1. 初始化项目
+    ```shell
+    $ mkdir myapp && cd myapp
+    $ npm create umi
+    ```
+
+2. 选择project（ant-design-pro）
+    ```shell
+    ? Select the boilerplate type (Use arrow keys)
+    ❯ ant-design-pro  - Create project with an layout-only ant-design-pro boilerplate, use together with umi block.
+      app             - Create project with a simple boilerplate, support typescript.
+      block           - Create a umi block.
+      library         - Create a library with umi.
+      plugin          - Create a umi plugin.
+    ```
+
+3. 选择是否使用typescript（y）
+    ```shell
+    ? Do you want to use typescript? (y/N)
+    ```
+
+4. 选择你需要的功能（至少选择antd、dva）
+    ```shell
+    ? What functionality do you want to enable? (Press <space> to select, <a> to toggle all, <i> to invert selection)
+    ❯◯ antd
+     ◯ dva
+     ◯ code splitting
+     ◯ dll
+    ```
+#### 添加依赖
+1. 安装依赖
+    ```shell
+    npm i lazy-ant --global
+    ```
+2. 添加页面
+    ```shell
+    lazy-ant add <name> --src=./src --option='{"id": "uuid", "columns": [...]}'
+    ```
+    注：[option](#Option)也可以定义在文件中，通过```--option='path-to-option/option.json'```的方式引入
+
+### Option
 
 | 名称 | 类型 | 描述 | 默认值 | 是否必须 |
 | ---- | ---- | ---- | ---- | ---- |
@@ -67,4 +107,10 @@ lazy-ant remove <name> --src=./src
     "age": 17,
   }
 ]
+```
+
+### 脚本
+```shell
+lazy-ant add <name> --src=./src --option=./option.json
+lazy-ant remove <name> --src=./src
 ```

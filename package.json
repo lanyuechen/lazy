@@ -20,7 +20,6 @@
   "license": "ISC",
   "dependencies": {
     "commander": "^3.0.2",
-    "js-yaml": "^3.13.1",
     "nunjucks": "^3.2.0"
   },
   "devDependencies": {

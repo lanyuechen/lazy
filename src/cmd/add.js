@@ -8,18 +8,23 @@ program
   .command('add <name>')
   .description('add a page')
   .option('-s, --src <path>', 'src路径', './')
-  .option('-o, --option <path>', 'option路径', './option.json')
+  .option('-o, --option <json|path>', '表结构配置json或配置文件路径', './option.json')
   .action(addHandler);
 
-function addHandler (name, args) {
+function addHandler(name, args) {
   const { src, option } = args;
 
-  let opt = fs.readFileSync(option, 'utf8');
-  opt = JSON.parse(opt);
+  let opt;
+  if (isJsonString(option)) {
+    opt = JSON.parse(option);
+  } else {
+    opt = fs.readFileSync(option, 'utf8');
+    opt = JSON.parse(opt);
+  }
   opt = {
     ...opt,
     columns: opt.columns.map(column => {
-      if (typeof(column) === 'string') {
+      if (typeof (column) === 'string') {
         return {
           title: toUpperFirstCase(column),
           dataIndex: column,
@@ -50,5 +55,15 @@ function addHandler (name, args) {
   // 创建utils/table/filter
   writeFile(path.join(src, `utils/table/filter.tsx`), tpl('utils/filter.njk', context));
   // 创键文档
-  
+
+}
+
+function isJsonString(str) {
+  try {
+    if (typeof JSON.parse(str) == "object") {
+      return true;
+    }
+  } catch (e) {
+  }
+  return false;
 }
