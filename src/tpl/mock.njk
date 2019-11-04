@@ -1,25 +1,23 @@
+import mockjs from 'mockjs';
+
 export default {
-  'GET /api/{{ name }}': {
-    success: true,
-    data: [
-      {%- for i in range(0, 15) %}
-      {
-        id: {{ i }},
-        {%- for column in opt.columns %}
-        {% if column.type === 'number' -%}
-          {{ column.dataIndex }}: {{ i }},
-        {%- elif column.type === 'date' -%}
-          {{ column.dataIndex }}: '2019-10-01 12:34:29',
-        {%- elif column.type === 'enum' -%}
-          {{ column.dataIndex }}: 'male',
-        {%- else -%}
-          {{ column.dataIndex }}: '{{ column.dataIndex }}-{{ i }}',
-        {%- endif %}
-        {%- endfor %}
-      },
+  'GET /api/{{ name }}': mockjs.mock({
+    'success|1': true,
+    'data|5-15': [{
+      'id|+1': 1,
+      {%- for column in opt.columns %}
+      {% if column.type === 'number' -%}
+        '{{ column.dataIndex }}|0-100.0.4': 1,
+      {%- elif column.type === 'date' -%}
+        {{ column.dataIndex }}: '@date("yyyy-MM-dd HH:mm:ss")',
+      {%- elif column.type === 'enum' -%}
+        '{{ column.dataIndex }}|1': ['male', 'famale'],
+      {%- else -%}
+        {{ column.dataIndex }}: '{{ column.dataIndex }}-@string("lower", 5)',
+      {%- endif %}
       {%- endfor %}
-    ],
-  },
+    }],
+  }),
   'POST /api/test': (req: Request, res: Response) => {
     res.send({ 
       success: true, 
@@ -27,6 +25,11 @@ export default {
         ...req.body,
         id: Math.random(),
       } 
+    });
+  },
+  'DELETE /api/:id': (req: Request, res: Response) => {
+    res.send({ 
+      success: true,
     });
   },
 };
