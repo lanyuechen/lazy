@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "bin": "src/index.js",
+  "bin": {
+    "lazy": "src/index.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "pkg": "pkg --out-path ./bin ."
