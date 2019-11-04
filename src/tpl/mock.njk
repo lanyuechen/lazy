@@ -2,7 +2,7 @@ import mockjs from 'mockjs';
 
 export default {
   'GET /api/{{ name }}': mockjs.mock({
-    'success|1': true,
+    success: true,
     'data|5-15': [{
       'id|+1': 1,
       {%- for column in opt.columns %}
