@@ -19,16 +19,16 @@ function addHandler(name, args) {
   const context = { name, opt };
   const nameCapital = toUpperFirstCase(name);
 
-  // 创建model
-  writeFile(path.join(src, `models/${name}.ts`), tpl('model.njk', context));
-  // 创建service
-  writeFile(path.join(src, `services/${name}.ts`), tpl('service.njk', context));
   // 创建page
   writeFile(path.join(src, `pages/${nameCapital}/index.tsx`), tpl('pages/index.njk', context));
   // 创建ModalUpsert
   writeFile(path.join(src, `pages/${nameCapital}/ModalUpsert.tsx`), tpl('pages/modal-upsert.njk', context));
+  // 创建model
+  writeFile(path.join(src, `pages/${nameCapital}/model.ts`), tpl('model.njk', context));
+  // 创建service
+  writeFile(path.join(src, `pages/${nameCapital}/service.ts`), tpl('service.njk', context));
   // 创建mock
-  writeFile(path.join(src, `../mock/${name}.ts`), tpl('mock.njk', context));
+  writeFile(path.join(src, `pages/${nameCapital}/_mock.ts`), tpl('mock.njk', context));
   // 创建utils/table/sorter
   writeFile(path.join(src, `utils/table/sorter.ts`), tpl('utils/sorter.njk', context));
   // 创建utils/table/filter
