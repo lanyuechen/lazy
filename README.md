@@ -35,7 +35,7 @@
      ◯ code splitting
      ◯ dll
     ```
-#### 添加依赖
+#### 添加页面(在根目录下执行命令，可以不写```--src```参数，src参数默认为./src)
 1. 安装依赖
     ```shell
     npm i lazy-ant --global
