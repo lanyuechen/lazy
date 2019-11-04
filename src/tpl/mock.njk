@@ -4,7 +4,7 @@ export default {
     data: [
       {%- for i in range(0, 15) %}
       {
-        {{ opt.id }}: {{ i }},
+        id: {{ i }},
         {%- for column in opt.columns %}
         {% if column.type === 'number' -%}
           {{ column.dataIndex }}: {{ i }},
@@ -25,7 +25,7 @@ export default {
       success: true, 
       data: {
         ...req.body,
-        {{ opt.id }}: Math.random(),
+        id: Math.random(),
       } 
     });
   },

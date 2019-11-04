@@ -3,10 +3,7 @@ import request from '@/utils/request';
 export async function query() {
   const res = await request('/api/{{ name }}');
 
-  return {
-    success: true,
-    data: res.data,
-  };
+  return res;
 }
 
 export async function create(data: any) {

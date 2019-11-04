@@ -14,28 +14,7 @@ program
 function addHandler(name, args) {
   const { src, option } = args;
 
-  let opt;
-  if (isJsonString(option)) {
-    opt = JSON.parse(option);
-  } else {
-    opt = fs.readFileSync(option, 'utf8');
-    opt = JSON.parse(opt);
-  }
-  opt = {
-    ...opt,
-    columns: opt.columns.map(column => {
-      if (typeof (column) === 'string') {
-        return {
-          title: toUpperFirstCase(column),
-          dataIndex: column,
-        }
-      }
-      return {
-        ...column,
-        title: column.title || toUpperFirstCase(column.dataIndex),
-      };
-    }),
-  };
+  const opt = getOption(option);
 
   const context = { name, opt };
   const nameCapital = toUpperFirstCase(name);
@@ -54,8 +33,36 @@ function addHandler(name, args) {
   writeFile(path.join(src, `utils/table/sorter.ts`), tpl('utils/sorter.njk', context));
   // 创建utils/table/filter
   writeFile(path.join(src, `utils/table/filter.tsx`), tpl('utils/filter.njk', context));
-  // 创键文档
+}
 
+function getOption(option) {
+  let opt;
+  if (isJsonString(option)) {
+    opt = JSON.parse(option);
+  } else {
+    try {
+      opt = fs.readFileSync(option, 'utf8');
+      opt = JSON.parse(opt);
+    } catch(err) {
+      opt = { id: 'id', columns: [] };
+    }
+  }
+  opt = {
+    ...opt,
+    columns: opt.columns.map(column => {
+      if (typeof (column) === 'string') {
+        return {
+          title: toUpperFirstCase(column),
+          dataIndex: column,
+        }
+      }
+      return {
+        ...column,
+        title: column.title || toUpperFirstCase(column.dataIndex),
+      };
+    }),
+  };
+  return opt;
 }
 
 function isJsonString(str) {

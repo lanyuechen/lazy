@@ -45,6 +45,17 @@
     lazy-ant add <name> --src=./src --option='{"id": "uuid", "columns": [...]}'
     ```
     注：[option](#Option)也可以定义在文件中，通过```--option='path-to-option/option.json'```的方式引入
+3. 在config中加入对应的路由配置
+```js
+routes: [
+  {
+    path: '/[name]',
+    name: '[name]',
+    component: './[Name]',
+  },
+  ...
+]
+```
 
 ### Option
 

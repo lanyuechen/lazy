@@ -22,7 +22,6 @@ export interface ModelType {
 }
 
 export interface StateType {
-  loading: boolean;
   modalUpsertVisible: boolean;
   list: any[];
   current?: any;
@@ -32,71 +31,69 @@ const Model: ModelType = {
   namespace: '{{ name }}',
   state: {
     list: [],
-    loading: false,
     modalUpsertVisible: false,
   },
   effects: {
     *list(action, { call, put }) {
-      yield put({
-        type: 'setState',
-        payload: {
-          loading: true,
-        },
-      });
-
       const res = yield call(query, action.payload);
-
-      yield put({
-        type: 'setState',
-        payload: {
-          list: res.data,
-          loading: false,
-        },
-      });
+      if (res.success) {
+        yield put({
+          type: 'setState',
+          payload: {
+            list: res.data,
+          },
+        });
+      }
     },
     *create(action, { call, put, select }) {
       const res = yield call(create, action.payload);
-      const { {{ name }} } = yield select();
+      if (res.success) {
+        const { {{ name }} } = yield select();
 
-      yield put({
-        type: 'setState',
-        payload: {
-          modalUpsertVisible: false,
-          list: [ res.data, ...{{ name }}.list ],
-        },
-      });
+        yield put({
+          type: 'setState',
+          payload: {
+            modalUpsertVisible: false,
+            list: [ res.data, ...{{ name }}.list ],
+          },
+        });
+      }
     },
     *update(action, { call, put, select }) {
       const { id, values } = action.payload;
       const res = yield call(update, id, values);
-      const { {{ name }} } = yield select();
+      if (res.success) {
+        const { {{ name }} } = yield select();
 
-      yield put({
-        type: 'setState',
-        payload: {
-          modalUpsertVisible: false,
-          list: {{ name }}.list.map((d: any) => {
-            if (d.id === id) {
-              return {
-                ...d,
-                ...values,
-              };
-            }
-            return d;
-          }),
-        },
-      });
+        yield put({
+          type: 'setState',
+          payload: {
+            modalUpsertVisible: false,
+            list: {{ name }}.list.map((d: any) => {
+              if (d.id === id) {
+                return {
+                  ...d,
+                  ...values,
+                };
+              }
+              return d;
+            }),
+          },
+        });
+      }
     },
     *remove(action, { call, put, select }) {
       const res = yield call(remove, action.payload);
-      const { {{ name }} } = yield select();
+      if (res.success) {
+        const { {{ name }} } = yield select();
 
-      yield put({
-        type: 'setState',
-        payload: {
-          list: {{ name }}.list.filter((item: any) => item.id !== action.payload),
-        },
-      });
+        yield put({
+          type: 'setState',
+          payload: {
+            list: {{ name }}.list.filter((item: any) => item.id !== action.payload),
+          },
+        });
+      }
     },
   },
   reducers: {
