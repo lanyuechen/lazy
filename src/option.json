@@ -1,28 +1,23 @@
 {
   "id": "id",
   "columns": [
+    "foobar",
+    "foo.bar",
     {
-      "title": "Name",
-      "dataIndex": "name",
-      "sorter": true,
-      "filter": true
-    },
-    {
-      "dataIndex": "height",
-      "type": "number"
-    },
-    {
-      "dataIndex": "birthday",
+      "dataIndex": "foo.name",
       "type": "date"
     },
     {
-      "dataIndex": "sex",
+      "dataIndex": "foo.age",
+      "type": "number"
+    },
+    {
+      "dataIndex": "foo.sex",
       "type": "enum",
       "options": [
         {"key": "male", "value": "male"},
         {"key": "famale", "value": "famale"}
       ]
-    },
-    "foobar"
+    }
   ]
 }

@@ -14,7 +14,7 @@ const formItemLayout = {
 };
 
 const ModalUpsert: React.FC<any> = props => {
-  const { visible, onOk, onCancel, defaultValue = {} } = props;
+  const { visible, onOk, onCancel, defaultValue } = props;
   const { getFieldDecorator, validateFields } = props.form;
 
   const handleOk = () => {
@@ -32,7 +32,7 @@ const ModalUpsert: React.FC<any> = props => {
 
   return (
     <Modal
-      title={props.defaultValue ? 'Update {{ name }}' : 'Add {{ name }}'}
+      title={defaultValue ? 'Update {{ name }}' : 'Add {{ name }}'}
       visible={visible}
       onOk={handleOk}
       onCancel={onCancel}
@@ -48,9 +48,9 @@ const ModalUpsert: React.FC<any> = props => {
               },
             ],
             {% if column.type === 'date' -%}
-              initialValue: moment(defaultValue.{{ column.dataIndex }}),
+              initialValue: moment(defaultValue && defaultValue.{{ column.dataIndex }}),
             {%- else -%}
-              initialValue: defaultValue.{{ column.dataIndex }},
+              initialValue: defaultValue && defaultValue.{{ column.dataIndex }},
             {%- endif %}
           })(
             {% if column.type === 'number' -%}

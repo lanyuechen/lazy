@@ -3,20 +3,9 @@ import mockjs from 'mockjs';
 export default {
   'GET /api/{{ name }}': mockjs.mock({
     success: true,
-    'data|5-15': [{
-      'id|+1': 1,
-      {%- for column in opt.columns %}
-      {% if column.type === 'number' -%}
-        '{{ column.dataIndex }}|0-100.0.4': 1,
-      {%- elif column.type === 'date' -%}
-        {{ column.dataIndex }}: '@date("yyyy-MM-dd HH:mm:ss")',
-      {%- elif column.type === 'enum' -%}
-        '{{ column.dataIndex }}|1': ['male', 'famale'],
-      {%- else -%}
-        {{ column.dataIndex }}: '{{ column.dataIndex }}-@string("lower", 5)',
-      {%- endif %}
-      {%- endfor %}
-    }],
+    'data|5-15': [
+      {{ digestOpt(opt, 6)|safe }}
+    ],
   }),
   'POST /api/test': (req: Request, res: Response) => {
     res.send({ 

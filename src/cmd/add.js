@@ -2,7 +2,7 @@ const program = require('commander');
 const path = require('path');
 const fs = require('fs');
 
-const { tpl, writeFile, toUpperFirstCase } = require('../utils/common');
+const { tpl, writeFile, toUpperFirstCase, digestOpt } = require('../utils/common');
 
 program
   .command('add <name>')
@@ -16,7 +16,7 @@ function addHandler(name, args) {
 
   const opt = getOption(option);
 
-  const context = { name, opt };
+  const context = { name, opt, digestOpt };
   const nameCapital = toUpperFirstCase(name);
 
   // 创建page
