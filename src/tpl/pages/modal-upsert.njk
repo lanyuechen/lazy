@@ -13,6 +13,19 @@ const formItemLayout = {
   },
 };
 
+const formatValues = (values: any) => {
+  return Object.keys(values).reduce((p: any, key: string) => {
+    if (values[key] instanceof moment) {
+      p[key] = values[key].format('YYYY-MM-DD HH:mm:ss');
+    } else if (typeof(values[key]) === 'object') {
+      p[key] = formatValues(values[key]);
+    } else {
+      p[key] = values[key];
+    }
+    return p;
+  }, {});
+};
+
 const ModalUpsert: React.FC<any> = props => {
   const { visible, onOk, onCancel, defaultValue } = props;
   const { getFieldDecorator, validateFields } = props.form;
@@ -22,10 +35,7 @@ const ModalUpsert: React.FC<any> = props => {
       if (errors) {
         return;
       }
-      values = Object.keys(values).reduce((p: any, key: string) => {
-        p[key] = values[key] instanceof moment ? values[key].format('YYYY-MM-DD HH:mm:ss') : values[key];
-        return p;
-      }, {})
+      values = formatValues(values);
       onOk && onOk(values);
     });
   };

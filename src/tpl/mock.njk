@@ -8,7 +8,7 @@ export default {
     ],
   }),
   'POST /api/test': (req: Request, res: Response) => {
-    res.send({ 
+    res.send({
       success: true,
       data: {
         ...req.body,
@@ -17,7 +17,7 @@ export default {
     });
   },
   'DELETE /api/{{ name }}/:id': (req: Request, res: Response) => {
-    res.send({ 
+    res.send({
       success: true,
       data: req.params.id,
     });
