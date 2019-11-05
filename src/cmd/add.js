@@ -30,10 +30,25 @@ function addHandler(name, args) {
   writeFile(path.join(src, `pages/${nameCapital}/service.ts`), tpl('service.njk', context));
   // 创建mock
   writeFile(path.join(src, `pages/${nameCapital}/_mock.ts`), tpl('mock.njk', context));
-  // 创建utils/table/sorter
-  writeFile(path.join(src, `utils/table/sorter.ts`), tpl('utils/sorter.njk', context));
-  // 创建utils/table/filter
-  writeFile(path.join(src, `utils/table/filter.tsx`), tpl('utils/filter.njk', context));
+  // 创建utils/lazy-ant/sorter
+  writeFile(path.join(src, `utils/lazy-ant/sorter.ts`), tpl('utils/sorter.njk', context));
+  // 创建utils/lazy-ant/filter
+  writeFile(path.join(src, `utils/lazy-ant/filter.tsx`), tpl('utils/filter.njk', context));
+
+  console.log(
+    'src\n' +
+    ' ├─ pages\n' +
+    ` │   └─ ${nameCapital}\n` +
+    ' │       ├─ index.tsx\n' +
+    ' │       ├─ ModalUpsert.tsx\n' +
+    ' │       ├─ model.ts\n' +
+    ' │       ├─ service.ts\n' +
+    ' │       └─ _mock.ts\n' +
+    ' └─ utils\n' +
+    '     └─ lazy-ant\n' +
+    '         ├─ filter.tsx\n' +
+    '         └─ sorter.ts'
+  );
 }
 
 function getOption(option) {

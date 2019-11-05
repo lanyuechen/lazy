@@ -124,7 +124,7 @@ src
  │       ├─ service.ts
  │       └─ _mock.ts
  └─ utils
-     └─ table
+     └─ lazy-ant
          ├─ filter.tsx
          └─ sorter.ts
 ```

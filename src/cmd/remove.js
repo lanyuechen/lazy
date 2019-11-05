@@ -15,6 +15,6 @@ function removeHandler (name, args) {
 
   // 移除page
   rmDirsSync(path.join(src, `pages/${nameCapital}`));
-  // 移除utils/table
-  rmDirsSync(path.join(src, 'utils/table'));
+  // 移除utils/lazy-ant
+  rmDirsSync(path.join(src, 'utils/lazy-ant'));
 }

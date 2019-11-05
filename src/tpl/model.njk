@@ -73,7 +73,7 @@ const Model: ModelType = {
               if (d.id === id) {
                 return {
                   ...d,
-                  ...values,
+                  ...values,  // todo values的值是包含嵌套的，所以这里可能会有问题，需要deepMerge
                 };
               }
               return d;
