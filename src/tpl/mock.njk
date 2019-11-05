@@ -16,9 +16,10 @@ export default {
       } 
     });
   },
-  'DELETE /api/:id': (req: Request, res: Response) => {
+  'DELETE /api/{{ name }}/:id': (req: Request, res: Response) => {
     res.send({ 
       success: true,
+      data: req.params.id,
     });
   },
 };

@@ -30,13 +30,20 @@ export async function update(id: string, data: any) {
   return res;
 }
 
-export async function remove(id: string) {
-  const res = await request(`/api/{{ name }}/${id}`, {
+export async function remove(ids: any) {
+  ids = Array.isArray(ids) ? ids : [ids];
+
+  const task = ids.map((id: string) => request(`/api/{{ name }}/${id}`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },
-  });
+  }));
 
-  return res;
+  const res = await Promise.all(task);
+
+  return {
+    success: true,
+    data: res.filter((d: any) => d.success).map((d: any) => `${d.data}`),
+  };
 }

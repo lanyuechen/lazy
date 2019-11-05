@@ -90,7 +90,7 @@ const Model: ModelType = {
         yield put({
           type: 'setState',
           payload: {
-            list: {{ name }}.list.filter((item: any) => item.id !== action.payload),
+            list: {{ name }}.list.filter((item: any) => !res.data.includes(`${item.id}`)),
           },
         });
       }

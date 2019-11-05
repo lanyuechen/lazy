@@ -7,16 +7,17 @@ const { tpl, writeFile, toUpperFirstCase, digestOpt } = require('../utils/common
 program
   .command('add <name>')
   .description('add a page')
-  .option('-s, --src <path>', 'src路径', './src')
-  .option('-o, --option <json|path>', '表结构配置json或配置文件路径', './option.json')
+  .option('-b, --batch', 'enable batch delete')
+  .option('-s, --src <path>', 'src root', './src')
+  .option('-o, --option <json|path>', 'table option', './option.json')
   .action(addHandler);
 
 function addHandler(name, args) {
-  const { src, option } = args;
+  const { src, option, batch } = args;
 
   const opt = getOption(option);
 
-  const context = { name, opt, digestOpt };
+  const context = { name, opt, batch, digestOpt };
   const nameCapital = toUpperFirstCase(name);
 
   // 创建page

@@ -81,7 +81,7 @@ function stringifyMock(obj, spaceCount = 0) {
     if (typeof(value) === 'object' && !value._column) {
       res += `${key}: ${stringifyMock(value, spaceCount + 2)},`;
     } else if (key === 'id') {
-      res += `'id|+1': 1,`;
+      res += `id: '@string("0123456789abcdef", 24)',`;
     } else if (value.type === 'number') {
       res += `'${key}|0-100.0-4': 1,`;
     } else if (value.type === 'date') {

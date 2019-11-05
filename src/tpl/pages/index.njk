@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Table, Card, Button, Icon, Modal, Spin } from 'antd';
 
@@ -18,9 +18,8 @@ const {{ name[0].toUpperCase() + name.substring(1) }}: React.FC<any> = props => 
 
   const columns: any[] = [
     {
-      title: 'ID',
-      dataIndex: 'id',
-      render: (txt: any, record: any, i: number) => i + 1,
+      title: 'No.',
+      dataIndex: '_idx',
     },
     {%- for column in opt.columns %}
     {
@@ -73,9 +72,46 @@ const {{ name[0].toUpperCase() + name.substring(1) }}: React.FC<any> = props => 
     });
   };
 
+  const dataSource = list.map((d: any, i: number) => ({...d, _idx: i + 1}));
+
+  {%- if batch %}
+  const [ selectedRowKeys, setSelectedRowKeys ] = useState([]);
+
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (keys: any) => {
+      setSelectedRowKeys(keys);
+    },
+  };
+
+  const handleBatchDelete = () => {
+    Modal.confirm({
+      title: 'Confirm',
+      content: 'Do you confirm delete these {{ name }}?',
+      onOk: () => {
+        dispatch({
+          type: '{{ name }}/remove',
+          payload: selectedRowKeys,
+        });
+        setSelectedRowKeys([]);
+      },
+    })
+  };
+  {%- endif %}
+
   return (
     <Spin spinning={loading}>
       <div style={% raw %}{{ marginBottom: 15, textAlign: 'right' }}{% endraw %}>
+        {%- if batch %}
+        <Button
+          type="danger"
+          onClick={handleBatchDelete}
+          disabled={selectedRowKeys.length === 0}
+        >
+          <Icon type="delete" /> Delete
+        </Button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+        {%- endif %}
         <Button onClick={() => dispatch({ type: '{{ name }}/showModalUpsert' })}>
           <Icon type="plus" /> New
         </Button>
@@ -89,7 +125,10 @@ const {{ name[0].toUpperCase() + name.substring(1) }}: React.FC<any> = props => 
       <Card bodyStyle={% raw %}{{ padding: 0 }}{% endraw %}>
         <Table
           columns={columns}
-          dataSource={list}
+          dataSource={dataSource}
+          {% if batch -%}
+            rowSelection={rowSelection}
+          {%- endif %}
           rowKey="id"
         />
       </Card>
