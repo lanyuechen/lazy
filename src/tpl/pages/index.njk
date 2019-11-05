@@ -35,10 +35,21 @@ const {{ name|capitalize }}: React.FC<any> = props => {
     {%- endfor %}
     {
       title: 'Action',
-      render: (txt: any, record: any) => [
-        <Button onClick={() => dispatch({type: '{{ name }}/showModalUpsert', payload: record})} key="edit" type="link">Edit</Button>,
-        <Button onClick={() => handleDelete(record.id)} key="delete" type="link">Delete</Button>,
-      ],
+      align: 'center',
+      render: (txt: any, record: any) => (
+        <React.Fragment>
+          <Button
+            type="link"
+            icon="edit"
+            onClick={() => dispatch({type: '{{ name }}/showModalUpsert', payload: record})}
+          />
+          <Button
+            type="link"
+            icon="delete"
+            onClick={() => handleDelete(record.id)}
+          />
+        </React.Fragment>
+      ),
     },
   ];
 
