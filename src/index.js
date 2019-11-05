@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 
 const program = require('commander');
+const package = require('../package.json');
 
 require('./cmd/add');
 require('./cmd/remove');
 
 program
-  .version('0.0.1', '-v, --version')
+  .version(package.version, '-v, --version')
 
 program.parse(process.argv);
