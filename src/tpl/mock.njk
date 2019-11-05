@@ -9,7 +9,7 @@ export default {
   }),
   'POST /api/test': (req: Request, res: Response) => {
     res.send({ 
-      success: true, 
+      success: true,
       data: {
         ...req.body,
         id: Math.random(),

@@ -1,25 +1,25 @@
 {
   "id": "id",
   "columns": [
-    "foobar",
-    "foo.bar",
     {
-      "dataIndex": "foo.name",
+      "dataIndex": "name",
+      "pattern": ":'@name()'",
+      "filter": true
+    },
+    {
+      "dataIndex": "info.birth",
       "type": "date",
-      "title": "日期",
+      "title": "出生日期",
       "sorter": true
     },
     {
-      "dataIndex": "foo.age",
-      "type": "number"
-    },
-    {
-      "dataIndex": "foo.sex",
+      "dataIndex": "info.sex",
       "type": "enum",
       "options": [
         {"key": "male", "value": "male"},
         {"key": "famale", "value": "famale"}
       ]
-    }
+    },
+    "desc"
   ]
 }

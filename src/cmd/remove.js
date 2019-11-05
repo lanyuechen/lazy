@@ -6,7 +6,7 @@ const { rmDirsSync, toUpperFirstCase } = require('../utils/common');
 program
   .command('remove <name>')
   .description('remove a page')
-  .option('-s, --src <path>', 'src路径', './src')
+  .option('-s, --src <path>', 'src root', './src')
   .action(removeHandler);
 
 function removeHandler (name, args) {

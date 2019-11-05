@@ -78,18 +78,21 @@ function stringifyMock(obj, spaceCount = 0) {
   let res = '';
   Object.entries(obj).map(([key, value]) => {
     res += `\n${space}  `;
-    if (typeof(value) === 'object' && !value._column) {
+    if (key === 'id') {
+      res += `id: '@guid()',`;
+    } else if (!value._column) {
       res += `${key}: ${stringifyMock(value, spaceCount + 2)},`;
-    } else if (key === 'id') {
-      res += `id: '@string("0123456789abcdef", 24)',`;
+    } else if (value.pattern) {
+      const [ suffix, pattern ] = value.pattern.split(':');
+      res += `${suffix ? `'${key}|${suffix}'` : key}: ${pattern},`;
     } else if (value.type === 'number') {
       res += `'${key}|0-100.0-4': 1,`;
     } else if (value.type === 'date') {
-      res += `${key}: '@date("yyyy-MM-dd HH:mm:ss")',`;
+      res += `${key}: '@datetime("yyyy-MM-dd HH:mm:ss")',`;
     } else if (value.type === 'enum') {
       res += `'${key}|1': [${value.options.map(o => `'${o.key}'`)}],`;
     } else {
-      res += `${key}: '${key}-@string("lower", 5)',`;
+      res += `${key}: '@string()',`;
     }
   });
   return `{${res}\n${space}}`;

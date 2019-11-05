@@ -7,7 +7,7 @@ import { searchFilter } from '@/utils/table/filter';
 
 import ModalUpsert from './ModalUpsert';
 
-const {{ name[0].toUpperCase() + name.substring(1) }}: React.FC<any> = props => {
+const {{ name|capitalize }}: React.FC<any> = props => {
   const { dispatch, list, modalUpsertVisible, loading, current } = props;
 
   useEffect(() => {
@@ -139,4 +139,4 @@ const {{ name[0].toUpperCase() + name.substring(1) }}: React.FC<any> = props => 
 export default connect(({ {{ name }}, loading }: any) => ({
   ...{{ name }},
   loading: loading.models.{{ name }},
-}))({{ name[0].toUpperCase() + name.substring(1) }});
+}))({{ name|capitalize }});

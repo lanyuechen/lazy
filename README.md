@@ -76,11 +76,12 @@ routes: [
 
 | 名称 | 类型 | 描述 | 默认值 | 是否必须 |
 | ---- | ---- | ---- | ---- | ---- |
-| dataIndex | string | 该字段在数据中的映射索引 | - | 是 |
+| dataIndex | string | 该字段在数据中的映射索引,支持 a.b.c、a[0].b.c[1] 的嵌套写法 | - | 是 |
 | title | string | 字段显示名称 | column.dataIndex | 否 |
+| type | enum[text/number/date/enum] | 字段类型 | text | 否 |
 | sorter | boolean | 该字段是否支持排序 | false | 否 |
 | filter | boolean | 该字段是否支持筛选 | false | 否 |
-| type | enum[text/number/date/enum] | 字段类型 | text | 否 |
+| pattern | string | [mock数据格式描述](http://mockjs.com/examples.html) | - | 否 |
 | options | array | 如果type=enum，options表示具体的枚举值 | [] | 如果type=enum，options必填 |
 
 ### Option 例子
@@ -92,9 +93,12 @@ routes: [
       "dataIndex": "name",
       "title": "Name",
       "sorter": true,
-      "filter": true
+      "filter": true,
+      "pattern": "0-10:1",  // => '${key}|0-10': 1
+      // "pattern": ":'@name()'",  // => ${key}: '@name()'  // 注意引号！
     },
     "sex",
+    "foo.bar",
     {
       "dataIndex": "age",
       "type": "number"
@@ -102,26 +106,45 @@ routes: [
   ]
 }
 ```
-对应的数据
-```json
-[
-  {
-    "uuid": "1",
-    "name": "xiaoming",
-    "sex": "male",
-    "age": 19,
-  },
-  {
-    "uuid": "2",
-    "name": "xiaohong",
-    "sex": "famale",
-    "age": 17,
-  }
-]
+
+### add命令
+
+```shell
+$ lazy-ant add <name> [--src="xxx"] [--option="xxx"] [--batch]
 ```
 
-### 脚本
+以上命令会在当前项目添加demo页面，目录结构如下：
+```
+src
+ ├─ pages
+ │   └─ Demo
+ │       ├─ index.tsx
+ │       ├─ ModalUpsert.tsx
+ │       ├─ model.ts
+ │       ├─ service.ts
+ │       └─ _mock.ts
+ └─ utils
+     └─ table
+         ├─ filter.tsx
+         └─ sorter.ts
+```
+
+#### 参数
+```
+-b, --batch               enable batch delete
+-s, --src <path>          src root (default: "./src")
+-o, --option <json|path>  table option (default: "./option.json")
+-h, --help                output usage information
+```
+
+### remove命令
+
 ```shell
-lazy-ant add <name> --src=./src --option=./option.json
-lazy-ant remove <name> --src=./src
+$ lazy-ant remove <name> [--src="xxx"]
+```
+
+#### 参数
+```
+-s, --src <path>  src root (default: "./src")
+-h, --help        output usage information
 ```
