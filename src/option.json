@@ -5,7 +5,9 @@
     "foo.bar",
     {
       "dataIndex": "foo.name",
-      "type": "date"
+      "type": "date",
+      "title": "日期",
+      "sorter": true
     },
     {
       "dataIndex": "foo.age",

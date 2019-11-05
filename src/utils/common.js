@@ -80,6 +80,8 @@ function stringifyMock(obj, spaceCount = 0) {
     res += `\n${space}  `;
     if (typeof(value) === 'object' && !value._column) {
       res += `${key}: ${stringifyMock(value, spaceCount + 2)},`;
+    } else if (key === 'id') {
+      res += `'id|+1': 1,`;
     } else if (value.type === 'number') {
       res += `'${key}|0-100.0-4': 1,`;
     } else if (value.type === 'date') {
@@ -100,7 +102,7 @@ function digestOpt(opt, spaceCount = 0) {
       ...n,
       _column: true,
     },
-  }), {});
+  }), {id: 1});
 
   obj = digest(obj);
 

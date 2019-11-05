@@ -1,7 +1,9 @@
+import _ from 'lodash';
+
 export function naturalSorter(name: string) {
   return function(a: any, b: any) {
-    a = a[name];
-    b = b[name];
+    a = _.get(a, name);
+    b = _.get(b, name);
     if (!isNaN(a) && !isNaN(b)) {
       return a - b;
     }
