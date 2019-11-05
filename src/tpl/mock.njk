@@ -4,7 +4,7 @@ export default {
   'GET /api/{{ name }}': mockjs.mock({
     success: true,
     'data|5-15': [
-      {{ digestOpt(opt, 6)|safe }}
+      {{ digestColumns(columns, 6)|safe }}
     ],
   }),
   'POST /api/test': (req: Request, res: Response) => {

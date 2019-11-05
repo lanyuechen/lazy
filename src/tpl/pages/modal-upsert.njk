@@ -49,7 +49,7 @@ const ModalUpsert: React.FC<any> = props => {
       destroyOnClose
     >
       <Form {...formItemLayout}>
-        {%- for column in opt.columns %}
+        {%- for column in columns %}
         <Form.Item label="{{ column.title }}">
           {getFieldDecorator('{{ column.dataIndex }}', {
             rules: [

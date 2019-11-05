@@ -21,7 +21,7 @@ const {{ name|capitalize }}: React.FC<any> = props => {
       title: 'No.',
       dataIndex: '_idx',
     },
-    {%- for column in opt.columns %}
+    {%- for column in columns %}
     {
       title: '{{ column.title }}',
       dataIndex: '{{ column.dataIndex }}',

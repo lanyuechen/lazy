@@ -57,22 +57,7 @@ routes: [
 ]
 ```
 
-### Option
-
-| 名称 | 类型 | 描述 | 默认值 | 是否必须 |
-| ---- | ---- | ---- | ---- | ---- |
-| id | string | 数据唯一索引 | - | 是 |
-| columns | Column[] | 数据字段映射定义 | [] | 是 |
-
-### Column
-
-注：Column为字符串时，等价为
-```js
-{
-  dataIndex: Column,
-  title: toUpperFirstCase(Column)
-}
-```
+### Columns
 
 | 名称 | 类型 | 描述 | 默认值 | 是否必须 |
 | ---- | ---- | ---- | ---- | ---- |
@@ -84,33 +69,40 @@ routes: [
 | pattern | string | [mock数据格式描述](http://mockjs.com/examples.html) | - | 否 |
 | options | array | 如果type=enum，options表示具体的枚举值 | [] | 如果type=enum，options必填 |
 
-### Option 例子
+#### Column简写形式
+```
+dataIndex
+dataIndex|type
+dataIndex|type|title
+dataIndex||title
+
+$ lazy-ant add demo --option='{"columns": []}'
+```
+
+### Columns 例子
 ```json
-{
-  "id": "uuid",
-  "columns": [
-    {
-      "dataIndex": "name",
-      "title": "Name",
-      "sorter": true,
-      "filter": true,
-      "pattern": "0-10:1",  // => '${key}|0-10': 1
-      // "pattern": ":'@name()'",  // => ${key}: '@name()'  // 注意引号！
-    },
-    "sex",
-    "foo.bar",
-    {
-      "dataIndex": "age",
-      "type": "number"
-    },
-  ]
-}
+[
+  {
+    "dataIndex": "name",
+    "title": "Name",
+    "sorter": true,
+    "filter": true,
+    "pattern": "0-10:1",  // => '${key}|0-10': 1
+    // "pattern": ":'@name()'",  // => ${key}: '@name()'  // 注意引号！
+  },
+  "sex",
+  "foo.bar",
+  {
+    "dataIndex": "age",
+    "type": "number"
+  },
+]
 ```
 
 ### add命令
 
 ```shell
-$ lazy-ant add <name> [--src="xxx"] [--option="xxx"] [--batch]
+$ lazy-ant add <name> [--src="xxx"] [--columns="xxx"] [--batch]
 ```
 
 以上命令会在当前项目添加demo页面，目录结构如下：
@@ -131,10 +123,10 @@ src
 
 #### 参数
 ```
--b, --batch               enable batch delete
--s, --src <path>          src root (default: "./src")
--o, --option <json|path>  table option (default: "./option.json")
--h, --help                output usage information
+-b, --batch                       enable batch delete
+-s, --src <path>                  src root (default: "./src")
+-c, --columns <string|json|path>  columns config (default: "name, date|date")
+-h, --help                        output usage information
 ```
 
 ### remove命令

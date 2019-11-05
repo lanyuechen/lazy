@@ -18,7 +18,7 @@ module.exports = {
   },
   mkdirsSync,
   rmDirsSync,
-  digestOpt,
+  digestColumns,
 };
 
 function mkdirsSync(dirname) {
@@ -98,8 +98,8 @@ function stringifyMock(obj, spaceCount = 0) {
   return `{${res}\n${space}}`;
 }
 
-function digestOpt(opt, spaceCount = 0) {
-  let obj = opt.columns.reduce((p, n) => ({
+function digestColumns(columns, spaceCount = 0) {
+  let obj = columns.reduce((p, n) => ({
     ...p,
     [n.dataIndex]: {
       ...n,

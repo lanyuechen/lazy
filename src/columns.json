@@ -1,0 +1,22 @@
+[
+  {
+    "dataIndex": "name",
+    "pattern": ":'@name()'",
+    "filter": true
+  },
+  {
+    "dataIndex": "info.birth",
+    "type": "date",
+    "title": "出生日期",
+    "sorter": true
+  },
+  {
+    "dataIndex": "info.sex",
+    "type": "enum",
+    "options": [
+      {"key": "male", "value": "male"},
+      {"key": "famale", "value": "famale"}
+    ]
+  },
+  "desc"
+]

@@ -2,22 +2,22 @@ const program = require('commander');
 const path = require('path');
 const fs = require('fs');
 
-const { tpl, writeFile, toUpperFirstCase, digestOpt } = require('../utils/common');
+const { tpl, writeFile, toUpperFirstCase, digestColumns } = require('../utils/common');
 
 program
   .command('add <name>')
   .description('add a page')
   .option('-b, --batch', 'enable batch delete')
   .option('-s, --src <path>', 'src root', './src')
-  .option('-o, --option <json|path>', 'table option', './option.json')
+  .option('-c, --columns <string|json|path>', 'columns config', 'name, date|date')
   .action(addHandler);
 
 function addHandler(name, args) {
-  const { src, option, batch } = args;
+  const { src, batch } = args;
 
-  const opt = getOption(option);
+  const columns = getColumns(args.columns);
 
-  const context = { name, opt, batch, digestOpt };
+  const context = { name, columns, batch, digestColumns };
   const nameCapital = toUpperFirstCase(name);
 
   // 创建page
@@ -51,34 +51,31 @@ function addHandler(name, args) {
   );
 }
 
-function getOption(option) {
-  let opt;
-  if (isJsonString(option)) {
-    opt = JSON.parse(option);
+function getColumns(columns) {
+  if (isJsonString(columns)) {
+    columns = JSON.parse(columns);
   } else {
     try {
-      opt = fs.readFileSync(option, 'utf8');
-      opt = JSON.parse(opt);
+      columns = fs.readFileSync(columns, 'utf8');
+      columns = JSON.parse(columns);
     } catch(err) {
-      opt = { id: 'id', columns: [] };
+      columns = columns.split(',').map(c => c.trim());
     }
   }
-  opt = {
-    ...opt,
-    columns: opt.columns.map(column => {
-      if (typeof (column) === 'string') {
-        return {
-          title: toUpperFirstCase(column),
-          dataIndex: column,
-        }
-      }
+  return columns.map(column => {
+    if (typeof (column) === 'string') {
+      const [ dataIndex, type, title ] = column.split('|').map(c => c.trim());
       return {
-        ...column,
-        title: column.title || toUpperFirstCase(column.dataIndex),
-      };
-    }),
-  };
-  return opt;
+        dataIndex,
+        type,
+        title: title || toUpperFirstCase(dataIndex),
+      }
+    }
+    return {
+      ...column,
+      title: column.title || toUpperFirstCase(column.dataIndex),
+    };
+  });
 }
 
 function isJsonString(str) {
