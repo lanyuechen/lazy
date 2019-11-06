@@ -44,7 +44,7 @@
     ```shell
     lazy-ant add <name> --src=./src --columns='xxx'
     ```
-    注：[columns](#Columns)也可以定义在文件中，通过```--columns='path-to-columns/columns.json'```的方式引入
+    注：[columns参数](#add)定义参考下文
 3. 在config中加入对应的路由配置
 ```js
 routes: [
@@ -54,48 +54,6 @@ routes: [
     component: './[Name]',
   },
   ...
-]
-```
-
-### Columns
-
-| 名称 | 类型 | 描述 | 默认值 | 是否必须 |
-| ---- | ---- | ---- | ---- | ---- |
-| dataIndex | string | 该字段在数据中的映射索引,支持 a.b.c、a[0].b.c[1] 的嵌套写法 | - | 是 |
-| title | string | 字段显示名称 | column.dataIndex | 否 |
-| type | enum[text/number/date/enum] | 字段类型 | text | 否 |
-| sorter | boolean | 该字段是否支持排序 | false | 否 |
-| filter | boolean | 该字段是否支持筛选 | false | 否 |
-| pattern | string | [mock数据格式描述](http://mockjs.com/examples.html) | - | 否 |
-| options | array | 如果type=enum，options表示具体的枚举值 | [] | 如果type=enum，options必填 |
-
-#### Column简写形式
-```
-dataIndex
-dataIndex|type
-dataIndex|type|title
-dataIndex||title
-
-$ lazy-ant add demo --columns='name, ct|date|创建时间'
-```
-
-### Columns 例子
-```json
-[
-  {
-    "dataIndex": "name",
-    "title": "Name",
-    "sorter": true,
-    "filter": true,
-    "pattern": "0-10:1",  // => '${key}|0-10': 1
-    // "pattern": ":'@name()'",  // => ${key}: '@name()'  // 注意引号！
-  },
-  "sex",
-  "foo.bar",
-  {
-    "dataIndex": "age",
-    "type": "number"
-  },
 ]
 ```
 
@@ -128,6 +86,44 @@ src
 -c, --columns <string|json|path>  columns config (default: "name, date|date")
 -h, --help                        output usage information
 ```
+
+1. -b, --batch
+    如果有该参数的话，生成的页面列表页会包含批量删除功能，表格每一行前会有选择框
+2. -s, --src
+    src根目录，建议命令操作在项目根目录进行，可以省略该参数
+3. -c, --columns
+    columns参数有多种定义方式
+    - 字符串简写（推荐）
+        每个column描述使用逗号分隔，每个column包含三个描述：dataIndex|type|title，使用竖线分隔
+        ```shell
+        $ lazy-ant add demo --columns='name, age|number, ct|date|日期, intro||介绍'
+        ```
+    - json字符串
+        columns通过json字符串描述，[字段定义](#Columns)
+        ```shell
+        $ lazy-ant add demo --columns='[{"dataIndex": "name"}, {"dataIndex": "age", "type": "number"}]'
+        ```
+        json数组中的每一项还可以使用简写方式进行定义
+        ```shell
+        $ lazy-ant add demo --columns='[{"dataIndex": "name"}, "age|number", "ct|date|日期"]'
+        ```
+    - 配置文件路径
+        columns可以是一个指向配置文件的路径,其结构同json字符串
+        ```shell
+        $ lazy-ant add demo --columns='path-to-columns/columns.json';
+        ```
+
+#### Columns
+
+| 名称 | 类型 | 描述 | 默认值 | 是否必须 |
+| ---- | ---- | ---- | ---- | ---- |
+| dataIndex | string | 该字段在数据中的映射索引,支持 a.b.c、a[0].b.c[1] 的嵌套写法 | - | 是 |
+| title | string | 字段显示名称 | column.dataIndex | 否 |
+| type | enum[text/number/date/enum] | 字段类型 | text | 否 |
+| sorter | boolean | 该字段是否支持排序 | false | 否 |
+| filter | boolean | 该字段是否支持筛选 | false | 否 |
+| pattern | string | [mock数据格式描述](http://mockjs.com/examples.html) | - | 否 |
+| options | array | 如果type=enum，options表示具体的枚举值 | [] | 如果type=enum，options必填 |
 
 ### remove命令
 

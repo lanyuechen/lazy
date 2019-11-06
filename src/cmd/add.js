@@ -2,7 +2,8 @@ const program = require('commander');
 const path = require('path');
 const fs = require('fs');
 
-const { tpl, writeFile, toUpperFirstCase, digestColumns } = require('../utils/common');
+const { tpl, writeFile, toUpperFirstCase, isJsonString } = require('../utils/common');
+const { digestColumns } = require('../utils/digest');
 
 program
   .command('add <name>')
@@ -13,11 +14,14 @@ program
   .action(addHandler);
 
 function addHandler(name, args) {
-  const { src, batch } = args;
+  const { src, columns, batch } = args;
 
-  const columns = getColumns(args.columns);
-
-  const context = { name, columns, batch, digestColumns };
+  const context = {
+    name,
+    columns: prepareColumns(columns),
+    batch,
+    digestColumns
+  };
   const nameCapital = toUpperFirstCase(name);
 
   // 创建page
@@ -51,7 +55,7 @@ function addHandler(name, args) {
   );
 }
 
-function getColumns(columns) {
+function prepareColumns(columns) {
   if (isJsonString(columns)) {
     columns = JSON.parse(columns);
   } else {
@@ -76,14 +80,4 @@ function getColumns(columns) {
       title: column.title || toUpperFirstCase(column.dataIndex),
     };
   });
-}
-
-function isJsonString(str) {
-  try {
-    if (typeof JSON.parse(str) == "object") {
-      return true;
-    }
-  } catch (e) {
-  }
-  return false;
 }
