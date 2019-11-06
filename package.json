@@ -12,8 +12,7 @@
   },
   "pkg": {
     "assets": [
-      "src/tpl/**/*",
-      "src/option.json"
+      "src/tpl/**/*"
     ]
   },
   "author": "",

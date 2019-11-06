@@ -42,9 +42,9 @@
     ```
 2. 添加页面
     ```shell
-    lazy-ant add <name> --src=./src --option='{"id": "uuid", "columns": [...]}'
+    lazy-ant add <name> --src=./src --columns='xxx'
     ```
-    注：[option](#Option)也可以定义在文件中，通过```--option='path-to-option/option.json'```的方式引入
+    注：[columns](#Columns)也可以定义在文件中，通过```--columns='path-to-columns/columns.json'```的方式引入
 3. 在config中加入对应的路由配置
 ```js
 routes: [
@@ -76,7 +76,7 @@ dataIndex|type
 dataIndex|type|title
 dataIndex||title
 
-$ lazy-ant add demo --option='{"columns": []}'
+$ lazy-ant add demo --columns='name, ct|date|创建时间'
 ```
 
 ### Columns 例子
