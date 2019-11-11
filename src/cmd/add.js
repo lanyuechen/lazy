@@ -1,9 +1,10 @@
 const program = require('commander');
 const path = require('path');
-const fs = require('fs');
 
-const { tpl, writeFile, toUpperFirstCase, isJsonString } = require('../utils/common');
+const { tpl, writeFile, toUpperFirstCase } = require('../utils/common');
 const { digestColumns } = require('../utils/digest');
+
+const { prepareColumns } = require('./utils');
 
 program
   .command('add <name>')
@@ -56,31 +57,4 @@ function addHandler(name, args) {
     '         ├─ filter.tsx\n' +
     '         └─ sorter.ts'
   );
-}
-
-function prepareColumns(columns) {
-  if (isJsonString(columns)) {
-    columns = JSON.parse(columns);
-  } else {
-    try {
-      columns = fs.readFileSync(columns, 'utf8');
-      columns = JSON.parse(columns);
-    } catch(err) {
-      columns = columns.split(',').map(c => c.trim());
-    }
-  }
-  return columns.map(column => {
-    if (typeof (column) === 'string') {
-      const [ dataIndex, type, title ] = column.split('|').map(c => c.trim());
-      return {
-        dataIndex,
-        type,
-        title: title || toUpperFirstCase(dataIndex),
-      }
-    }
-    return {
-      ...column,
-      title: column.title || toUpperFirstCase(column.dataIndex),
-    };
-  });
 }

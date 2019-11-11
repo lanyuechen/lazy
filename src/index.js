@@ -5,6 +5,7 @@ const package = require('../package.json');
 
 require('./cmd/add');
 require('./cmd/remove');
+require('./cmd/form');
 
 program
   .version(package.version, '-v, --version')

@@ -1,0 +1,32 @@
+<Form labelCol={6} wrapperCol={18}>
+  {%- for column in columns %}
+  <Form.Item label="{{ column.title }}">
+    {getFieldDecorator('{{ column.dataIndex }}', {
+      rules: [
+        {
+          required: true,
+        },
+      ],
+      {% if column.type === 'date' -%}
+        initialValue: moment(defaultValue && defaultValue.{{ column.dataIndex }}),
+      {%- else -%}
+        initialValue: defaultValue && defaultValue.{{ column.dataIndex }},
+      {%- endif %}
+    })(
+      {% if column.type === 'number' -%}
+        <InputNumber />
+      {%- elif column.type === 'date' -%}
+        <DatePicker showTime />
+      {%- elif column.type === 'enum' -%}
+        <Select>
+        {%- for option in column.options %}
+        <Select.Option value="{{ option.key }}">{{ option.value }}</Select.Option>
+        {%- endfor %}
+      </Select>
+      {%- else -%}
+        <Input />
+      {%- endif %}
+    )}
+  </Form.Item>
+  {%- endfor %}
+</Form>
