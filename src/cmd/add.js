@@ -28,6 +28,8 @@ function addHandler(name, args) {
   writeFile(path.join(src, `pages/${nameCapital}/index.tsx`), tpl('pages/index.njk', context));
   // 创建ModalUpsert
   writeFile(path.join(src, `pages/${nameCapital}/ModalUpsert.tsx`), tpl('pages/modal-upsert.njk', context));
+  // 创建Detail
+  writeFile(path.join(src, `pages/${nameCapital}/Detail.tsx`), tpl('pages/detail.njk', context));
   // 创建model
   writeFile(path.join(src, `pages/${nameCapital}/model.ts`), tpl('model.njk', context));
   // 创建service
@@ -45,6 +47,7 @@ function addHandler(name, args) {
     ` │   └─ ${nameCapital}\n` +
     ' │       ├─ index.tsx\n' +
     ' │       ├─ ModalUpsert.tsx\n' +
+    ' │       ├─ Detail.tsx\n' +
     ' │       ├─ model.ts\n' +
     ' │       ├─ service.ts\n' +
     ' │       └─ _mock.ts\n' +

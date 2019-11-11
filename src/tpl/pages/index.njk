@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'dva';
 import { Table, Card, Button, Icon, Modal, Spin } from 'antd';
+import router from 'umi/router';
 
 import { naturalSorter } from '@/utils/lazy-ant/sorter';
 import { searchFilter } from '@/utils/lazy-ant/filter';
@@ -38,6 +39,11 @@ const {{ name|capitalize }}: React.FC<any> = props => {
       align: 'center',
       render: (txt: any, record: any) => (
         <React.Fragment>
+          <Button
+            type="link"
+            icon="file-text"
+            onClick={() => router.push(`/{{ name }}/${record.id}`)}
+          />
           <Button
             type="link"
             icon="edit"
